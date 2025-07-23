@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Serviço - Cabucu Transportes</title>
+    <!-- Inclui Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter para todo o corpo do documento */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <!-- Título principal do formulário, agora exibindo "Cabuçu Transportes" -->
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Cabuçu Transportes</h1>
+        <p class="text-center text-gray-600 mb-8">Preencha os dados abaixo para agendar sua corrida ou entrega com a Cabucu Transportes.</p>
+
+        <form id="agendamentoForm" class="space-y-4">
+            <!-- Campo Nome Completo -->
+            <div>
+                <label for="nome" class="block text-gray-700 text-sm font-semibold mb-2">Nome Completo:</label>
+                <input type="text" id="nome" name="nome" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Seu nome completo" required>
+            </div>
+
+            <!-- Campo Telefone -->
+            <div>
+                <label for="telefone" class="block text-gray-700 text-sm font-semibold mb-2">Telefone (com DDD):</label>
+                <input type="tel" id="telefone" name="telefone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="(XX) XXXXX-XXXX" required>
+            </div>
+
+            <!-- Campo E-mail -->
+            <div>
+                <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">E-mail:</label>
+                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="seu.email@exemplo.com" required>
+            </div>
+
+            <!-- Campo Tipo de Serviço -->
+            <div>
+                <label for="tipoServico" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Serviço:</label>
+                <select id="tipoServico" name="tipoServico" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <option value="">Selecione o tipo de serviço</option>
+                    <option value="corrida">Corrida</option>
+                    <option value="entrega">Entrega</option>
+                </select>
+            </div>
+
+            <!-- Campo Data do Agendamento -->
+            <div>
+                <label for="dataAgendamento" class="block text-gray-700 text-sm font-semibold mb-2">Data do Agendamento:</label>
+                <input type="date" id="dataAgendamento" name="dataAgendamento" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Campo Hora do Agendamento -->
+            <div>
+                <label for="horaAgendamento" class="block text-gray-700 text-sm font-semibold mb-2">Hora do Agendamento:</label>
+                <input type="time" id="horaAgendamento" name="horaAgendamento" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Campo Endereço de Origem -->
+            <div>
+                <label for="origem" class="block text-gray-700 text-sm font-semibold mb-2">Endereço de Origem:</label>
+                <input type="text" id="origem" name="origem" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rua, número, bairro, cidade" required>
+            </div>
+
+            <!-- Campo Endereço de Destino -->
+            <div>
+                <label for="destino" class="block text-gray-700 text-sm font-semibold mb-2">Endereço de Destino:</label>
+                <input type="text" id="destino" name="destino" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rua, número, bairro, cidade" required>
+            </div>
+
+            <!-- Campo Observações -->
+            <div>
+                <label for="observacoes" class="block text-gray-700 text-sm font-semibold mb-2">Observações (opcional):</label>
+                <textarea id="observacoes" name="observacoes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Detalhes adicionais sobre o serviço..."></textarea>
+            </div>
+
+            <!-- Mensagem de Confirmação (inicialmente oculta) -->
+            <div id="confirmationMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative" role="alert">
+                <strong class="font-bold">Sucesso!</strong>
+                <span class="block sm:inline">Seu agendamento foi enviado. Entraremos em contato em breve para confirmar.</span>
+            </div>
+
+            <!-- Botão de Enviar -->
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300">
+                Agendar Serviço
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Adiciona um listener para o evento de envio do formulário
+        document.getElementById('agendamentoForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário (que recarregaria a página)
+
+            // Aqui você pode coletar os dados do formulário
+            const formData = {
+                nome: document.getElementById('nome').value,
+                telefone: document.getElementById('telefone').value,
+                email: document.getElementById('email').value,
+                tipoServico: document.getElementById('tipoServico').value,
+                dataAgendamento: document.getElementById('dataAgendamento').value,
+                horaAgendamento: document.getElementById('horaAgendamento').value,
+                origem: document.getElementById('origem').value,
+                destino: document.getElementById('destino').value,
+                observacoes: document.getElementById('observacoes').value
+            };
+
+            console.log('Dados do Agendamento:', formData);
+
+            // --- SIMULAÇÃO DE ENVIO DE DADOS ---
+            // Em um ambiente real, você enviaria esses dados para um servidor
+            // usando fetch() ou XMLHttpRequest. Por exemplo:
+            /*
+            fetch('/api/agendar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Sucesso:', data);
+                // Exibe a mensagem de confirmação
+                document.getElementById('confirmationMessage').classList.remove('hidden');
+                // Opcional: Limpa o formulário após o envio
+                document.getElementById('agendamentoForm').reset();
+            })
+            .catch((error) => {
+                console.error('Erro:', error);
+                // Aqui você pode exibir uma mensagem de erro para o usuário
+                alert('Ocorreu um erro ao enviar seu agendamento. Por favor, tente novamente mais tarde.');
+            });
+            */
+
+            // Para esta demonstração, apenas exibimos a mensagem de confirmação
+            // e limpamos o formulário após 2 segundos.
+            document.getElementById('confirmationMessage').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('agendamentoForm').reset();
+                document.getElementById('confirmationMessage').classList.add('hidden');
+            }, 2000); // Esconde a mensagem e limpa o formulário após 2 segundos
+        });
+    </script>
+</body>
+</html>
