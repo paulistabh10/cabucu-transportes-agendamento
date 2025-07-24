@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Serviço - Cabucu Transportes</title>
+    <!-- Inclui Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter para todo o corpo do documento */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <!-- Título principal do formulário, agora exibindo "Cabuçu Transportes" -->
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Cabuçu Transportes</h1>
+        <p class="text-center text-gray-600 mb-8">Preencha os dados abaixo para agendar sua corrida ou entrega com a Cabucu Transportes.</p>
+
+        <!-- O formulário agora apontará para o Google Forms -->
+        <form id="agendamentoForm" class="space-y-4" method="POST" target="_blank">
+            <!-- Campo Nome Completo -->
+            <div>
+                <label for="nome" class="block text-gray-700 text-sm font-semibold mb-2">Nome Completo:</label>
+                <input type="text" id="nome" name="entry.SEU_ID_DO_CAMPO_NOME" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Seu nome completo" required>
+            </div>
+
+            <!-- Campo Telefone -->
+            <div>
+                <label for="telefone" class="block text-gray-700 text-sm font-semibold mb-2">Telefone (com DDD):</label>
+                <input type="tel" id="telefone" name="entry.SEU_ID_DO_CAMPO_TELEFONE" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="(XX) XXXXX-XXXX" required>
+            </div>
+
+            <!-- Campo E-mail -->
+            <div>
+                <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">E-mail:</label>
+                <input type="email" id="email" name="entry.SEU_ID_DO_CAMPO_EMAIL" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="seu.email@exemplo.com" required>
+            </div>
+
+            <!-- Campo Tipo de Serviço -->
+            <div>
+                <label for="tipoServico" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Serviço:</label>
+                <select id="tipoServico" name="entry.SEU_ID_DO_CAMPO_TIPO_SERVICO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <option value="">Selecione o tipo de serviço</option>
+                    <option value="Corrida">Corrida</option>
+                    <option value="Entrega">Entrega</option>
+                </select>
+            </div>
+
+            <!-- Campo Data do Agendamento -->
+            <div>
+                <label for="dataAgendamento" class="block text-gray-700 text-sm font-semibold mb-2">Data do Agendamento:</label>
+                <input type="date" id="dataAgendamento" name="entry.SEU_ID_DO_CAMPO_DATA" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Campo Hora do Agendamento -->
+            <div>
+                <label for="horaAgendamento" class="block text-gray-700 text-sm font-semibold mb-2">Hora do Agendamento:</label>
+                <input type="time" id="horaAgendamento" name="entry.SEU_ID_DO_CAMPO_HORA" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Campo Endereço de Origem -->
+            <div>
+                <label for="origem" class="block text-gray-700 text-sm font-semibold mb-2">Endereço de Origem:</label>
+                <input type="text" id="origem" name="entry.SEU_ID_DO_CAMPO_ORIGEM" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rua, número, bairro, cidade" required>
+            </div>
+
+            <!-- Campo Endereço de Destino -->
+            <div>
+                <label for="destino" class="block text-gray-700 text-sm font-semibold mb-2">Endereço de Destino:</label>
+                <input type="text" id="destino" name="entry.SEU_ID_DO_CAMPO_DESTINO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rua, número, bairro, cidade" required>
+            </div>
+
+            <!-- Opção de Agendamento para Terceiro -->
+            <div class="flex items-center mt-4">
+                <input type="checkbox" id="paraTerceiro" name="entry.SEU_ID_DO_CAMPO_PARA_TERCEIRO" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                <label for="paraTerceiro" class="ml-2 block text-gray-700 text-sm font-semibold">Este agendamento é para um terceiro?</label>
+            </div>
+
+            <!-- Campos do Terceiro (inicialmente ocultos) -->
+            <div id="camposTerceiro" class="space-y-4 border border-gray-200 p-4 rounded-lg bg-gray-50 hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Dados do Terceiro</h2>
+                <!-- Campo Nome Completo do Terceiro -->
+                <div>
+                    <label for="nomeTerceiro" class="block text-gray-700 text-sm font-semibold mb-2">Nome Completo do Terceiro:</label>
+                    <input type="text" id="nomeTerceiro" name="entry.SEU_ID_DO_CAMPO_NOME_TERCEIRO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nome completo do terceiro">
+                </div>
+
+                <!-- Campo Endereço do Terceiro -->
+                <div>
+                    <label for="enderecoTerceiro" class="block text-gray-700 text-sm font-semibold mb-2">Endereço do Terceiro:</label>
+                    <input type="text" id="enderecoTerceiro" name="entry.SEU_ID_DO_CAMPO_ENDERECO_TERCEIRO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rua, número, bairro, cidade do terceiro">
+                </div>
+
+                <!-- Campo CPF do Terceiro -->
+                <div>
+                    <label for="cpfTerceiro" class="block text-gray-700 text-sm font-semibold mb-2">CPF do Terceiro:</label>
+                    <input type="text" id="cpfTerceiro" name="entry.SEU_ID_DO_CAMPO_CPF_TERCEIRO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="XXX.XXX.XXX-XX">
+                </div>
+
+                <!-- Aviso de Responsabilidade -->
+                <p class="text-sm text-red-600 bg-red-100 p-3 rounded-lg border border-red-300">
+                    <strong class="font-bold">Atenção:</strong> O solicitante é de **suma responsabilidade** por todas as informações e pelo serviço agendado para o terceiro.
+                </p>
+            </div>
+
+            <!-- Campo Observações -->
+            <div>
+                <label for="observacoes" class="block text-gray-700 text-sm font-semibold mb-2">Observações (opcional):</label>
+                <textarea id="observacoes" name="entry.SEU_ID_DO_CAMPO_OBSERVACOES" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Detalhes adicionais sobre o serviço..."></textarea>
+            </div>
+
+            <!-- Mensagem de Confirmação (inicialmente oculta) -->
+            <div id="confirmationMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative" role="alert">
+                <strong class="font-bold">Sucesso!</strong>
+                <span class="block sm:inline">Seu agendamento foi enviado. Entraremos em contato em breve para confirmar.</span>
+            </div>
+
+            <!-- Botão de Enviar -->
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300">
+                Agendar Serviço
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // O JavaScript para exibir a mensagem de sucesso localmente pode ser mantido
+        // Mas o envio real dos dados será feito pelo 'action' do formulário
+        document.getElementById('agendamentoForm').addEventListener('submit', function(event) {
+            // Remove o preventDefault() para permitir que o formulário seja enviado para o Google Forms
+            // event.preventDefault(); 
+
+            // Exibe a mensagem de confirmação localmente
+            document.getElementById('confirmationMessage').classList.remove('hidden');
+            
+            // Opcional: Limpa o formulário após um pequeno atraso
+            setTimeout(() => {
+                document.getElementById('agendamentoForm').reset();
+                document.getElementById('confirmationMessage').classList.add('hidden');
+            }, 3000); // Esconde a mensagem e limpa o formulário após 3 segundos
+        });
+
+        // Lógica para mostrar/esconder os campos do terceiro
+        const paraTerceiroCheckbox = document.getElementById('paraTerceiro');
+        const camposTerceiroDiv = document.getElementById('camposTerceiro');
+        const nomeTerceiroInput = document.getElementById('nomeTerceiro');
+        const enderecoTerceiroInput = document.getElementById('enderecoTerceiro');
+        const cpfTerceiroInput = document.getElementById('cpfTerceiro');
+
+        paraTerceiroCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                camposTerceiroDiv.classList.remove('hidden');
+                // Torna os campos obrigatórios quando visíveis
+                nomeTerceiroInput.setAttribute('required', 'required');
+                enderecoTerceiroInput.setAttribute('required', 'required');
+                cpfTerceiroInput.setAttribute('required', 'required');
+            } else {
+                camposTerceiroDiv.classList.add('hidden');
+                // Remove a obrigatoriedade e limpa os campos quando ocultos
+                nomeTerceiroInput.removeAttribute('required');
+                enderecoTerceiroInput.removeAttribute('required');
+                cpfTerceiroInput.removeAttribute('required');
+                nomeTerceiroInput.value = '';
+                enderecoTerceiroInput.value = '';
+                cpfTerceiroInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
