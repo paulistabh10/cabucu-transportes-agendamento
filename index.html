@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento - Cabuçu Transportes</title>
+    <style>
+        /* Estilos básicos para o corpo da página */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Container principal do formulário */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Título do formulário */
+        h2 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        /* Grupo de cada campo do formulário */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para labels */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555555;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        /* Estilo para campos de input, select e textarea */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box; /* Garante que padding e border não aumentem a largura */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        /* Estilo específico para select */
+        select {
+            appearance: none; /* Remove o estilo padrão do navegador */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2C197.3L159.2%2C69.5c-4.4-4.4-11.5-4.4-15.9%2C0L5.4%2C197.3c-4.4%2C4.4-4.4%2C11.5%2C0%2C15.9l12.7%2C12.7c4.4%2C4.4%2C11.5%2C4.4%2C15.9%2C0l110.1-110.1l110.1%2C110.1c4.4%2C4.4%2C11.5%2C4.4%2C15.9%2C0l12.7-12.7C291.4%2C208.8%2C291.4%2C201.7%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 10px;
+            padding-right: 30px; /* Espaço para a seta */
+        }
+
+        /* Placeholder styles */
+        ::-webkit-input-placeholder { color: #aaaaaa; }
+        ::-moz-placeholder { color: #aaaaaa; }
+        :-ms-input-placeholder { color: #aaaaaa; }
+        :-moz-placeholder { color: #aaaaaa; }
+
+        /* Estilo para o botão de envio */
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Dicas de formato para campos */
+        .hint {
+            font-size: 0.85em;
+            color: #888888;
+            margin-top: 5px;
+        }
+
+        /* Estilo para campos obrigatórios (asterisco vermelho) */
+        .required-indicator::after {
+            content: " *";
+            color: red;
+            margin-left: 4px;
+        }
+
+        /* Estilo para a seção de terceiros */
+        .third-party-fields {
+            margin-top: 25px;
+            padding: 20px;
+            border: 1px dashed #cccccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: all 0.4s ease-in-out;
+            overflow: hidden; /* Para esconder suavemente quando display none */
+        }
+        .third-party-fields h3 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        /* Estilo para checkbox */
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .checkbox-group label {
+            margin-bottom: 0;
+        }
+
+        /* Responsividade básica */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Agendamento de Serviço - Cabuçu Transportes</h2>
+        <form id="schedulingForm">
+            <div class="form-group">
+                <label for="nomeCompleto" class="required-indicator">Nome Completo:</label>
+                <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cpf" class="required-indicator">CPF:</label>
+                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 123.456.789-00">
+                <div class="hint">Formato: 123.456.789-00</div>
+            </div>
+
+            <div class="form-group">
+                <label for="telefone">Telefone (com DDD):</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{4,5}-\d{4}">
+                <div class="hint">Formato: (99) 99999-9999 ou (99) 9999-9999</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="seu.email@exemplo.com">
+            </div>
+
+            <div class="form-group">
+                <label for="tipoServico">Tipo de Serviço:</label>
+                <select id="tipoServico" name="tipoServico">
+                    <option value="">Selecione o tipo de serviço</option>
+                    <option value="corrida">Corrida</option>
+                    <option value="entrega">Entrega</option>
+                    <option value="frete">Frete</option>
+                    <option value="outros">Outros</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dataAgendamento">Data do Agendamento:</label>
+                <input type="date" id="dataAgendamento" name="dataAgendamento">
+            </div>
+
+            <div class="form-group">
+                <label for="horaAgendamento">Hora do Agendamento:</label>
+                <input type="time" id="horaAgendamento" name="horaAgendamento">
+            </div>
+
+            <div class="form-group">
+                <label for="enderecoOrigem" class="required-indicator">Endereço de Origem:</label>
+                <input type="text" id="enderecoOrigem" name="enderecoOrigem" placeholder="Rua, número, bairro, cidade" required>
+                <div class="hint">Ex: Rua das Flores, 123, Centro, São Paulo</div>
+            </div>
+
+            <div class="form-group">
+                <label for="enderecoDestino">Endereço de Destino (Opcional para corridas):</label>
+                <input type="text" id="enderecoDestino" name="enderecoDestino" placeholder="Rua, número, bairro, cidade">
+                <div class="hint">Preencha se for entrega ou se souber o destino da corrida.</div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="agendarParaTerceiros" name="agendarParaTerceiros">
+                <label for="agendarParaTerceiros">Agendar para Terceiros?</label>
+            </div>
+
+            <div id="thirdPartyFields" class="third-party-fields" style="display: none; opacity: 0; max-height: 0;">
+                <h3>Dados do Terceiro</h3>
+                <div class="form-group">
+                    <label for="nomeTerceiro" class="required-indicator">Nome Completo do Terceiro:</label>
+                    <input type="text" id="nomeTerceiro" name="nomeTerceiro" placeholder="Nome completo do terceiro">
+                </div>
+                <div class="form-group">
+                    <label for="cpfTerceiro" class="required-indicator">CPF do Terceiro:</label>
+                    <input type="text" id="cpfTerceiro" name="cpfTerceiro" placeholder="000.000.000-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 123.456.789-00">
+                    <div class="hint">Formato: 123.456.789-00</div>
+                </div>
+                <div class="form-group">
+                    <label for="telefoneTerceiro">Telefone do Terceiro (com DDD):</label>
+                    <input type="tel" id="telefoneTerceiro" name="telefoneTerceiro" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{4,5}-\d{4}">
+                    <div class="hint">Formato: (99) 99999-9999 ou (99) 9999-9999</div>
+                </div>
+                <div class="form-group">
+                    <label for="emailTerceiro">E-mail do Terceiro:</label>
+                    <input type="email" id="emailTerceiro" name="emailTerceiro" placeholder="email.do.terceiro@exemplo.com">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoes">Observações (Opcional):</label>
+                <textarea id="observacoes" name="observacoes" placeholder="Detalhes adicionais sobre o serviço, como tipo de carga, número de passageiros, pontos de parada, etc."></textarea>
+            </div>
+
+            <div class="button-container">
+                <button type="submit">Agendar Serviço</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const agendarParaTerceirosCheckbox = document.getElementById('agendarParaTerceiros');
+        const thirdPartyFields = document.getElementById('thirdPartyFields');
+        const nomeTerceiroInput = document.getElementById('nomeTerceiro');
+        const cpfTerceiroInput = document.getElementById('cpfTerceiro');
+        const telefoneTerceiroInput = document.getElementById('telefoneTerceiro');
+        const emailTerceiroInput = document.getElementById('emailTerceiro');
+
+        agendarParaTerceirosCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Show with animation
+                thirdPartyFields.style.display = 'block';
+                setTimeout(() => {
+                    thirdPartyFields.style.opacity = '1';
+                    thirdPartyFields.style.maxHeight = '500px'; // Set a max-height for animation
+                }, 10); // Small delay to allow display:block to take effect
+                
+                nomeTerceiroInput.setAttribute('required', 'required');
+                cpfTerceiroInput.setAttribute('required', 'required');
+                // phone and email are not mandatory for third party unless you want them to be
+            } else {
+                // Hide with animation
+                thirdPartyFields.style.opacity = '0';
+                thirdPartyFields.style.maxHeight = '0';
+                setTimeout(() => {
+                    thirdPartyFields.style.display = 'none';
+                }, 400); // Wait for transition to finish
+                
+                nomeTerceiroInput.removeAttribute('required');
+                cpfTerceiroInput.removeAttribute('required');
+                
+                // Optionally clear fields when unchecked
+                nomeTerceiroInput.value = '';
+                cpfTerceiroInput.value = '';
+                telefoneTerceiroInput.value = '';
+                emailTerceiroInput.value = '';
+            }
+        });
+
+        // --- Funções de Máscara de Input ---
+
+        function applyCpfMask(input) {
+            input.addEventListener('input', function (e) {
+                let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+                if (value.length > 11) value = value.substring(0, 11); // Limit to 11 digits
+
+                if (value.length > 9) {
+                    value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+                } else if (value.length > 6) {
+                    value = value.replace(/^(\d{3})(\d{3})(\d{0,3})$/, '$1.$2.$3');
+                } else if (value.length > 3) {
+                    value = value.replace(/^(\d{3})(\d{0,3})$/, '$1.$2');
+                }
+                e.target.value = value;
+            });
+        }
+
+        function applyPhoneMask(input) {
+            input.addEventListener('input', function (e) {
+                let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+                if (value.length > 11) value = value.substring(0, 11); // Limit to 11 digits (with DDD)
+
+                if (value.length === 11) { // (XX) XXXXX-XXXX (cellphone)
+                    value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+                } else if (value.length === 10) { // (XX) XXXX-XXXX (landline)
+                    value = value.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+                } else if (value.length > 6) {
+                    value = value.replace(/^(\d{2})(\d{4,5})(\d{0,4})$/, '($1) $2-$3');
+                } else if (value.length > 2) {
+                    value = value.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+                } else if (value.length > 0) {
+                    value = value.replace(/^(\d*)/, '($1');
+                }
+                e.target.value = value;
+            });
+        }
+
+        // Aplicar máscaras aos campos relevantes
+        applyCpfMask(document.getElementById('cpf'));
+        applyCpfMask(document.getElementById('cpfTerceiro'));
+        applyPhoneMask(document.getElementById('telefone'));
+        applyPhoneMask(document.getElementById('telefoneTerceiro'));
+
+        // --- Manipulação do Envio do Formulário ---
+        document.getElementById('schedulingForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o envio padrão do formulário (que recarregaria a página)
+
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            console.log('Dados do Formulário Agendado:', data);
+
+            // --- Importante para o GitHub Pages (sem backend) ---
+            // Como o GitHub Pages é um site estático, você NÃO PODE processar
+            // este formulário diretamente em um servidor.
+            // Para realmente "enviar" esses dados para algum lugar, você precisaria:
+            //
+            // 1. Usar um serviço de formulários de terceiros (recomendado para Pages):
+            //    Ex: Formspree.io, Netlify Forms (se hospedar no Netlify), Getform.io.
+            //    Você mudaria o 'action' do formulário para o endpoint deles
+            //    e o 'method' para 'POST'.
+            //    Exemplo: <form action="https://formspree.io/f/yourformid" method="POST">
+            //    Para Formspree, depois de configurar, você receberá os dados por e-mail.
+            //
+            // 2. Integrar com um Google Forms (como discutimos antes):
+            //    Nesse caso, você incorporaria o Google Forms diretamente (como no passo a passo anterior),
+            //    e o Google cuidaria do envio dos dados para uma planilha.
+            //    Se você usar este HTML puro, o Google Forms não vai "entender" esses dados automaticamente.
+            //
+            // Por enquanto, esta mensagem é apenas para demonstração:
+            alert('Agendamento enviado com sucesso! \n\n(Atenção: Este formulário é estático e não envia dados para um servidor real diretamente. Para isso, configure um serviço de formulários de terceiros ou use o Google Forms embutido.) \n\nVerifique o console (F12) para ver os dados coletados.');
+
+            // Opcional: Limpar o formulário após o "envio"
+            this.reset();
+            // Garante que o campo de terceiros seja escondido novamente
+            thirdPartyFields.style.display = 'none';
+            thirdPartyFields.style.opacity = '0';
+            thirdPartyFields.style.maxHeight = '0';
+        });
+    </script>
+</body>
+</html>
