@@ -188,7 +188,7 @@
 <body>
     <div class="container">
         <h2>Agendamento de Serviço - Cabuçu Transportes</h2>
-        <form id="schedulingForm">
+        <190:         <form id="schedulingForm" action="https://formspree.io/f/mgvzkedd" method="POST">
             <div class="form-group">
                 <label for="nomeCompleto" class="required-indicator">Nome Completo:</label>
                 <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Seu nome completo" required>
@@ -365,39 +365,7 @@
         applyPhoneMask(document.getElementById('telefone'));
         applyPhoneMask(document.getElementById('telefoneTerceiro'));
 
-        // --- Manipulação do Envio do Formulário ---
-        document.getElementById('schedulingForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Previne o envio padrão do formulário (que recarregaria a página)
-
-            const formData = new FormData(this);
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-
-            console.log('Dados do Formulário Agendado:', data);
-
-            // --- Importante para o GitHub Pages (sem backend) ---
-            // Como o GitHub Pages é um site estático, você NÃO PODE processar
-            // este formulário diretamente em um servidor.
-            // Para realmente "enviar" esses dados para algum lugar, você precisaria:
-            //
-            // 1. Usar um serviço de formulários de terceiros (recomendado para Pages):
-            //    Ex: Formspree.io, Netlify Forms (se hospedar no Netlify), Getform.io.
-            //    Você mudaria o 'action' do formulário para o endpoint deles
-            //    e o 'method' para 'POST'.
-            //    Exemplo: <form action="https://formspree.io/f/yourformid" method="POST">
-            //    Para Formspree, depois de configurar, você receberá os dados por e-mail.
-            //
-            // 2. Integrar com um Google Forms (como discutimos antes):
-            //    Nesse caso, você incorporaria o Google Forms diretamente (como no passo a passo anterior),
-            //    e o Google cuidaria do envio dos dados para uma planilha.
-            //    Se você usar este HTML puro, o Google Forms não vai "entender" esses dados automaticamente.
-            //
-            // Por enquanto, esta mensagem é apenas para demonstração:
-            alert('Agendamento enviado com sucesso! \n\n(Atenção: Este formulário é estático e não envia dados para um servidor real diretamente. Para isso, configure um serviço de formulários de terceiros ou use o Google Forms embutido.) \n\nVerifique o console (F12) para ver os dados coletados.');
-
-            // Opcional: Limpar o formulário após o "envio"
+        
             this.reset();
             // Garante que o campo de terceiros seja escondido novamente
             thirdPartyFields.style.display = 'none';
