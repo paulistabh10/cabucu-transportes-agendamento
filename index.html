@@ -188,6 +188,7 @@
 <body>
     <div class="container">
         <h2>Agendamento de Serviço - Cabuçu Transportes</h2>
+        <!-- O atributo 'action' abaixo foi atualizado com o seu URL do Formspree.io -->
         <form id="schedulingForm" action="https://formspree.io/f/mgvzkedd" method="POST">
             <div class="form-group">
                 <label for="nomeCompleto" class="required-indicator">Nome Completo:</label>
@@ -202,8 +203,9 @@
 
             <div class="form-group">
                 <label for="telefone">Telefone (com DDD):</label>
-                <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{4,5}-\d{4}">
-                <div class="hint">Formato: (99) 99999-9999 ou (99) 9999-9999</div>
+                <!-- O pattern foi ajustado para ser mais flexível -->
+                <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" pattern="^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$" title="Formato: (XX) XXXXX-XXXX ou XXXXXXXXXXX">
+                <div class="hint">Ex: (99) 99999-9999 ou 99999999999</div>
             </div>
 
             <div class="form-group">
@@ -258,12 +260,12 @@
                 <div class="form-group">
                     <label for="cpfTerceiro" class="required-indicator">CPF do Terceiro:</label>
                     <input type="text" id="cpfTerceiro" name="cpfTerceiro" placeholder="000.000.000-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 123.456.789-00">
-                    <div class="hint">Formato: 123.456.789-00</div>
                 </div>
                 <div class="form-group">
                     <label for="telefoneTerceiro">Telefone do Terceiro (com DDD):</label>
-                    <input type="tel" id="telefoneTerceiro" name="telefoneTerceiro" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{4,5}-\d{4}">
-                    <div class="hint">Formato: (99) 99999-9999 ou (99) 9999-9999</div>
+                    <!-- O pattern foi ajustado para ser mais flexível -->
+                    <input type="tel" id="telefoneTerceiro" name="telefoneTerceiro" placeholder="(00) 00000-0000" pattern="^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$" title="Formato: (XX) XXXXX-XXXX ou XXXXXXXXXXX">
+                    <div class="hint">Ex: (99) 99999-9999 ou 99999999999</div>
                 </div>
                 <div class="form-group">
                     <label for="emailTerceiro">E-mail do Terceiro:</label>
@@ -344,9 +346,10 @@
                 let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
                 if (value.length > 11) value = value.substring(0, 11); // Limit to 11 digits (with DDD)
 
-                if (value.length === 11) { // (XX) XXXXX-XXXX (cellphone)
+                // Formata para (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
+                if (value.length === 11) {
                     value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
-                } else if (value.length === 10) { // (XX) XXXX-XXXX (landline)
+                } else if (value.length === 10) {
                     value = value.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
                 } else if (value.length > 6) {
                     value = value.replace(/^(\d{2})(\d{4,5})(\d{0,4})$/, '($1) $2-$3');
@@ -365,13 +368,9 @@
         applyPhoneMask(document.getElementById('telefone'));
         applyPhoneMask(document.getElementById('telefoneTerceiro'));
 
-        
-            this.reset();
-            // Garante que o campo de terceiros seja escondido novamente
-            thirdPartyFields.style.display = 'none';
-            thirdPartyFields.style.opacity = '0';
-            thirdPartyFields.style.maxHeight = '0';
-        });
+        // --- Manipulação do Envio do Formulário ---
+        // Este bloco de código foi removido para que o Formspree.io possa processar o envio.
+        // O Formspree.io irá redirecionar o usuário para uma página de "Obrigado" após o envio.
     </script>
 </body>
 </html>
