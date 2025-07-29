@@ -201,17 +201,104 @@
             margin-bottom: 0;
         }
 
+        /* Estilos para o Assistente IA */
+        .ai-assistant-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 600px; /* Fixed height for chat area */
+        }
+
+        .chat-history {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .chat-message.user {
+            background-color: #e2f0ff; /* Light blue for user messages */
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .chat-message.ai {
+            background-color: #e6e6e6; /* Light gray for AI messages */
+            align-self: flex-start;
+            text-align: left;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area textarea {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            font-size: 1em;
+            resize: vertical; /* Allow vertical resizing */
+            min-height: 50px;
+            max-height: 150px;
+        }
+
+        .chat-input-area button {
+            background-color: #3b82f6; /* Blue send button */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-input-area button:hover {
+            background-color: #2563eb;
+        }
+
+        .loading-indicator {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+
         /* Responsividade básica */
         @media (max-width: 768px) {
-            .agendamento-form-container {
+            .agendamento-form-container, .ai-assistant-container {
                 padding: 25px;
             }
-            .agendamento-form-container h2 {
+            .agendamento-form-container h2, .ai-assistant-container h2 {
                 font-size: 1.5em;
             }
-            button[type="submit"] {
+            button[type="submit"], .chat-input-area button {
                 padding: 12px 20px;
                 font-size: 1em;
+            }
+            .chat-message {
+                max-width: 95%; /* Adjust for smaller screens */
             }
         }
     </style>
@@ -226,6 +313,9 @@
                 </li>
                 <li class="mr-2">
                     <button id="quem-somos-tab-button" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tab-button" onclick="showTab('quem-somos')">Quem Somos Nós</button>
+                </li>
+                <li class="mr-2">
+                    <button id="assistente-ia-tab-button" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tab-button" onclick="showTab('assistente-ia')">Assistente IA</button>
                 </li>
             </ul>
         </nav>
@@ -279,13 +369,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="enderecoOrigem" class="required-indicator">Endereço de Origem (Ida):</label>
+                        <label for="enderecoOrigem" class="required-indicator">Endereço de Origem (local de partida):</label>
                         <input type="text" id="enderecoOrigem" name="enderecoOrigem" placeholder="Rua, número, bairro, cidade" required>
                         <div class="hint">Ex: Rua das Flores, 123, Centro, São Paulo</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="enderecoDestino">Endereço de Destino (Ida - Opcional para corridas):</label>
+                        <label for="enderecoDestino">Endereço de Destino:</label>
                         <input type="text" id="enderecoDestino" name="enderecoDestino" placeholder="Rua, número, bairro, cidade">
                         <div class="hint">Preencha se for entrega ou se souber o destino da corrida.</div>
                     </div>
@@ -306,12 +396,12 @@
                             <input type="time" id="horaVolta" name="horaVolta">
                         </div>
                         <div class="form-group">
-                            <label for="enderecoOrigemVolta">Endereço de Origem (Volta):</label>
+                            <label for="enderecoOrigemVolta">Endereço de Origem (local de partida):</label>
                             <input type="text" id="enderecoOrigemVolta" name="enderecoOrigemVolta" placeholder="Rua, número, bairro, cidade">
                             <div class="hint">Normalmente o mesmo Endereço de Destino da Ida.</div>
                         </div>
                         <div class="form-group">
-                            <label for="enderecoDestinoVolta">Endereço de Destino (Volta):</label>
+                            <label for="enderecoDestinoVolta">Endereço de Destino:</label>
                             <input type="text" id="enderecoDestinoVolta" name="enderecoDestinoVolta" placeholder="Rua, número, bairro, cidade">
                             <div class="hint">Normalmente o mesmo Endereço de Origem da Ida.</div>
                         </div>
@@ -435,6 +525,21 @@
                     Escolher a Cabuçu Transportes significa optar por uma viagem mais <strong class="text-blue-600">segura, planejada e com total transparência</strong>. Somos a sua melhor rota para chegar ao seu destino com tranquilidade, sabendo exatamente o que esperar.
                 </p>
             </section>
+        </div>
+
+        <!-- Tab Content - Assistente IA -->
+        <div id="assistente-ia-content" class="tab-content hidden">
+            <div class="ai-assistant-container">
+                <h2 class="text-center text-3xl font-bold text-gray-900 mb-6">Assistente de IA</h2>
+                <div class="chat-history" id="chatHistory">
+                    <!-- Chat messages will be appended here -->
+                </div>
+                <div class="chat-input-area">
+                    <textarea id="aiPromptInput" placeholder="Pergunte algo ao assistente de IA..." rows="1"></textarea>
+                    <button id="sendAiPromptButton">Enviar</button>
+                </div>
+                <div class="loading-indicator hidden" id="aiLoadingIndicator">Digitando...</div>
+            </div>
         </div>
     </div>
 
@@ -603,63 +708,103 @@
         document.getElementById('schedulingForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Previne o envio padrão do formulário (que recarregaria a página)
 
-            const dataAgendamento = document.getElementById('dataAgendamento').value;
-            const horaAgendamento = document.getElementById('horaAgendamento').value;
-
-            // Combine data and time into a single Date object for comparison
-            const scheduledDateTime = new Date(`${dataAgendamento}T${horaAgendamento}:00`);
-            const currentDateTime = new Date();
-
-            // Calculate the minimum required time (current time + 6 hours)
-            const minRequiredDateTime = new Date(currentDateTime.getTime() + (6 * 60 * 60 * 1000)); // 6 hours in milliseconds
-
-            // Validate if the scheduled time is at least 6 hours in the future
-            if (scheduledDateTime.getTime() < minRequiredDateTime.getTime()) {
-                alert('Agendamentos devem ser feitos com no mínimo 6 horas de antecedência.');
-                return; // Stop the form submission
-            }
-
             const formData = new FormData(this);
             const data = {};
             for (let [key, value] of formData.entries()) {
                 data[key] = value;
             }
 
-            console.log('Dados do Formulário Agendado:', data);
+            // Log all form data to the console
+            console.log('Dados do Agendamento:', data);
 
-            // --- Importante para o GitHub Pages (sem backend) ---
-            // Como o GitHub Pages é um site estático, você NÃO PODE processar
-            // este formulário diretamente em um servidor.
-            // Para realmente "enviar" esses dados para algum lugar, você precisaria:
-            //
-            // 1. Usar um serviço de formulários de terceiros (recomendado para Pages):
-            //    Ex: Formspree.io, Netlify Forms (se hospedar no Netlify), Getform.io.
-            //    Você mudaria o 'action' do formulário para o endpoint deles
-            //    e o 'method' para 'POST'.
-            //    Exemplo: <form action="https://formspree.io/f/yourformid" method="POST">
-            //    Para Formspree, depois de configurar, você receberá os dados por e-mail.
-            //
-            // 2. Integrar com um Google Forms (como discutimos antes):
-            //    Nesse caso, você incorporaria o Google Forms diretamente (como no passo a passo anterior),
-            //    e o Google cuidaria do envio dos dados para uma planilha.
-            //    Se você usar este HTML puro, o Google Forms não vai "entender" esses dados automaticamente.
-            //
-            // Por enquanto, esta mensagem é apenas para demonstração:
-            alert('Agendamento enviado com sucesso! \n\n(Atenção: Este formulário é estático e não envia dados para um servidor real. Para isso, configure um serviço de formulários de terceiros ou use o Google Forms embutido.) \n\nVerifique o console (F12) para ver os dados coletados.');
+            // Display a success message (replace with actual submission logic)
+            const formContainer = document.querySelector('.agendamento-form-container');
+            const successMessage = document.createElement('div');
+            successMessage.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4';
+            successMessage.innerHTML = '<strong>Sucesso!</strong> Seu agendamento foi enviado. Entraremos em contato em breve.';
+            formContainer.appendChild(successMessage);
 
-            // Opcional: Limpar o formulário após o "envio"
+            // Optionally, clear the form after successful submission
             this.reset();
-            // Garante que o campo de terceiros seja escondido novamente
-            thirdPartyFields.style.display = 'none';
-            thirdPartyFields.style.opacity = '0';
-            thirdPartyFields.style.maxHeight = '0';
-            // Garante que o campo de ida e volta seja escondido novamente
-            returnTripFields.style.display = 'none';
-            returnTripFields.style.opacity = '0';
-            returnTripFields.style.maxHeight = '0';
+
+            // Hide success message after a few seconds
+            setTimeout(() => {
+                successMessage.remove();
+            }, 5000);
         });
 
-        // Show the 'agendamento' tab by default when the page loads
+
+        // --- Assistente IA Logic ---
+        const aiPromptInput = document.getElementById('aiPromptInput');
+        const sendAiPromptButton = document.getElementById('sendAiPromptButton');
+        const chatHistoryDiv = document.getElementById('chatHistory');
+        const aiLoadingIndicator = document.getElementById('aiLoadingIndicator');
+
+        // Function to add a message to the chat history
+        function addMessageToChat(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            messageDiv.innerText = message;
+            chatHistoryDiv.appendChild(messageDiv);
+            chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight; // Scroll to bottom
+        }
+
+        // Function to send prompt to Gemini API
+        async function sendPromptToAI() {
+            const prompt = aiPromptInput.value.trim();
+            if (!prompt) return;
+
+            addMessageToChat(prompt, 'user'); // Add user's message to chat
+            aiPromptInput.value = ''; // Clear input field
+            aiLoadingIndicator.classList.remove('hidden'); // Show loading indicator
+            sendAiPromptButton.disabled = true; // Disable button while loading
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas will automatically provide it in runtime
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    addMessageToChat(text, 'ai'); // Add AI's response to chat
+                } else {
+                    addMessageToChat('Desculpe, não consegui gerar uma resposta. Tente novamente.', 'ai');
+                    console.error('Unexpected API response structure:', result);
+                }
+            } catch (error) {
+                console.error('Erro ao chamar a API Gemini:', error);
+                addMessageToChat('Ocorreu um erro ao conectar com o assistente. Por favor, tente mais tarde.', 'ai');
+            } finally {
+                aiLoadingIndicator.classList.add('hidden'); // Hide loading indicator
+                sendAiPromptButton.disabled = false; // Re-enable button
+            }
+        }
+
+        // Event listener for send button
+        sendAiPromptButton.addEventListener('click', sendPromptToAI);
+
+        // Event listener for Enter key in the textarea
+        aiPromptInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { // Check for Enter key without Shift
+                e.preventDefault(); // Prevent new line
+                sendPromptToAI();
+            }
+        });
+
+        // Initial tab display
         document.addEventListener('DOMContentLoaded', () => {
             showTab('agendamento');
         });
